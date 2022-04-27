@@ -5,7 +5,7 @@ public abstract class Person {
     private String name;
     private String dateOfBirth;
     private String address;
-    private boolean gender = true;
+    private String gender;
     private int idCard;
     private int phoneNumber;
     private String email;
@@ -17,7 +17,7 @@ public abstract class Person {
                   String name,
                   String dateOfBirth,
                   String address,
-                  boolean gender,
+                  String gender,
                   int idCard,
                   int phoneNumber,
                   String email) {
@@ -51,7 +51,7 @@ public abstract class Person {
         return dateOfBirth;
     }
 
-    public void setAge(int age) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -63,11 +63,11 @@ public abstract class Person {
         this.address = address;
     }
 
-    public boolean isGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -95,21 +95,13 @@ public abstract class Person {
         this.email = email;
     }
 
-    public String comfirmGender() {
-        if (this.gender) {
-            return "Male";
-        } else {
-            return "Female";
-        }
-    }
-
     @Override
     public String toString() {
         return "ID: " + id +
                 ", Name: " + name +
-                ", Age: " + dateOfBirth +
+                ", Date Of Birth: " + dateOfBirth +
                 ", Address: " + address +
-                ", Gender: " + comfirmGender() +
+                ", Gender: " + gender +
                 ", IdCard: " + idCard +
                 ", Phone Number: " + phoneNumber +
                 ", Email: " + email;

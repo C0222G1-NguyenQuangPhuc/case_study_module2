@@ -3,8 +3,7 @@ package services.libs_of_impl;
 import models.person.Employee;
 import services.libs_of_interface.EmployeeService;
 import utils.ReadAndWrite;
-import utils.RegexData;
-
+import utils.regex.RegexEmployee;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +13,10 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
     private static final String EMPLOYEE_LIST = "src\\data\\employee.csv";
     private static List<Employee> employeeList = getEmployeeList();
 
-    private static Scanner sc = new Scanner(System.in);
+    private static final Scanner sc = new Scanner(System.in);
 
     @Override
-    public void display(){
+    public void display() {
         employeeList = getEmployeeList();
         for (Employee employee : employeeList) {
             System.out.println(employee.toString());
@@ -32,106 +31,118 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
                     element[1],
                     element[2],
                     element[3],
-                    Boolean.getBoolean(element[4]),
+                    element[4],
                     Integer.parseInt(element[5]),
                     Integer.parseInt(element[6]),
                     element[7],
                     element[8],
                     element[9],
                     Double.parseDouble(element[10]));
-                    listFileEmployee.add(employee);
+            listFileEmployee.add(employee);
         }
         return listFileEmployee;
     }
 
     @Override
     public void addNew() throws IOException {
-//        try {
-//            System.out.println("Enter id: ");
-//            int inputId = Integer.parseInt(sc.nextLine());
-//            System.out.println("Enter name: ");
-//            String inputName = sc.nextLine();
-//            System.out.println("Enter age: ");
-//            String inputDateOfBirth = sc.nextLine();
-//            System.out.println("Enter address: ");
-//            String inputAddress = sc.nextLine();
-//            System.out.println("Choose gender: 1.Male / 2.Female ");
-//            int chooseGender = Integer.parseInt(sc.nextLine());
-//            boolean comfirmGender = false;
-//            if (chooseGender == 1) {
-//                comfirmGender = true;
-//            } else {
-//                comfirmGender = false;
-//            }
-//            System.out.println("Enter IdCard: ");
-//            int inputIdCard = Integer.parseInt(sc.nextLine());
-//            System.out.println("Enter phone number: ");
-//            int inputNumPhone = Integer.parseInt(sc.nextLine());
-//            System.out.println("Enter email: ");
-//            String inputEmail = sc.nextLine();
-//            System.out.println("Enter level: ");
-//            String inputLevel = sc.nextLine();
-//            System.out.println("Enter position: ");
-//            String inputPosition = sc.nextLine();
-//            System.out.println("Enter salary: ");
-//            double inputSalary = Double.parseDouble(sc.nextLine());
-//            employeeList.add(new Employee(inputId,
-//                    inputName,
-//                    inputDateOfBirth,
-//                    inputAddress,
-//                    comfirmGender,
-//                    inputIdCard,
-//                    inputNumPhone,
-//                    inputEmail,
-//                    inputLevel,
-//                    inputPosition,
-//                    inputSalary));
-//            String line = inputId + "," +
-//                    inputName + "," +
-//                    inputDateOfBirth + "," +
-//                    inputAddress + "," +
-//                    comfirmGender + "," +
-//                    inputIdCard + "," +
-//                    inputNumPhone + "," +
-//                    inputEmail + "," +
-//                    inputLevel + "," +
-//                    inputPosition + "," +
-//                    inputSalary;
-//            ReadAndWrite.writeList(EMPLOYEE_LIST,line);
-//            System.out.println("Add new successful");
-//        }catch (NumberFormatException e){
-//            e.printStackTrace();
-//        }
-        RegexData regexData = new RegexData();
         System.out.println("Nhập id nhân viên:");
-        int id = regexData.inputIntNumber();
+        int id = RegexEmployee.inputIntNumber();
         System.out.println("Nhập tên nhân viên:");
         String name = sc.nextLine();
-        System.out.println("Nhập ngày sinh:");
-        String dateOfBirth = regexData.inputDateOfBirth();
+        String dateOfBirth = RegexEmployee.getDateOfBirth();
         System.out.println("Nhập địa chỉ:");
         String address = sc.nextLine();
         System.out.println("Chọn giới tính: 1.Nam / 2.Nữ");
-        boolean gender = regexData.comfirmGender(regexData.inputIntNumber());
+        String gender = sc.nextLine();
         System.out.println("Nhập số CMND:");
-        int idCard = regexData.inputIntNumber();
+        int idCard = RegexEmployee.inputIntNumber();
         System.out.println("Nhập số điện thoại:");
-        int phoneNumber = regexData.inputIntNumber();
-        System.out.println("Nhập email:");
+        int phoneNumber = RegexEmployee.inputIntNumber();
+        String email = RegexEmployee.inputEmail();
+        System.out.println("Chọn trình độ:");
+        String level = chooseLevel();
+        System.out.println("Chọn vị trí:");
+        String position = choosePosition();
+        System.out.println("Nhập lương:");
+        double salary = RegexEmployee.inputDouNumber();
+        employeeList.add(new Employee(id, name, dateOfBirth, address, gender, idCard, phoneNumber, email, level, position, salary));
+        String line =  id+ "," +
+                name + "," +
+                dateOfBirth + "," +
+                address + "," +
+                gender + "," +
+                idCard + "," +
+                phoneNumber + "," +
+                email + "," +
+                level + "," +
+                position + "," +
+                salary;
+        ReadAndWrite.writeList(EMPLOYEE_LIST, line);
+        System.out.println("Thêm mới thành công");
+    }
+
+    public String chooseLevel() {
+        while (true) {
+            System.out.println("1.Trung cấp");
+            System.out.println("2.Cao đẳng");
+            System.out.println("3.Đại học");
+            System.out.println("4.Sau đại học");
+            switch (Integer.parseInt(sc.nextLine())) {
+                case 1:
+                    return "Trung cấp";
+                case 2:
+                    return "Cao đẳng";
+                case 3:
+                    return "Đại học";
+                case 4:
+                    return "Sau đại học";
+                default:
+                    System.out.println("Thử lại");
+            }
+        }
+    }
+
+    public String choosePosition() {
+        while (true) {
+            System.out.println("1.Lễ tân");
+            System.out.println("2.Phục vụ");
+            System.out.println("3.Chuyên viên");
+            System.out.println("4.Giám sát");
+            System.out.println("5.Quản lý");
+            System.out.println("6.Giám đốc");
+            switch (Integer.parseInt(sc.nextLine())) {
+                case 1:
+                    return "Lễ tân";
+                case 2:
+                    return "Phục vụ";
+                case 3:
+                    return "Chuyên viên";
+                case 4:
+                    return "Giám sát";
+                case 5:
+                    return "Quản lý";
+                case 6:
+                    return "Giám đốc";
+                default:
+                    System.out.println("Thử lại");
+            }
+        }
     }
 
     //Edit by name
     @Override
-    public void edit() {
+    public void edit() throws IOException {
+
         boolean result = false;
         System.out.println("Enter name employee want to edit");
         String findName = sc.nextLine();
         for (Employee employee : employeeList) {
             if (employee.getName().contains(findName)) {
+                System.out.println(employee.toString());
                 boolean check = true;
                 while (check) {
-                    System.out.println("1.Edit Id.");
-                    System.out.println("2.Edit Name.");
+                    System.out.println("1.Edit Id of Employee.");
+                    System.out.println("2.Edit Name of Employee.");
                     System.out.println("3.Edit Age.");
                     System.out.println("4.Edit Address.");
                     System.out.println("5.Edit Gender.");
@@ -147,7 +158,7 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
                     switch (choose) {
                         case 1: {
                             System.out.println("Enter new Id: ");
-                            employee.setId(Integer.parseInt(sc.nextLine()));
+                            employee.setId(RegexEmployee.inputIntNumber());
                             break;
                         }
                         case 2: {
@@ -157,7 +168,7 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
                         }
                         case 3: {
                             System.out.println("Enter new Age: ");
-                            employee.setAge(Integer.parseInt(sc.nextLine()));
+                            employee.setDateOfBirth(sc.nextLine());
                             break;
                         }
                         case 4: {
@@ -167,12 +178,8 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
                         }
 
                         case 5: {
-                            System.out.println("1. Male / 2.Female");
-                            if (Integer.parseInt(sc.nextLine()) == 1) {
-                                employee.setGender(true);
-                            } else {
-                                employee.setGender(false);
-                            }
+                            System.out.println("Enter new Gender");
+                            employee.setGender(sc.nextLine());
                             break;
                         }
                         case 6: {
@@ -212,32 +219,54 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
                             break;
                     }
                 }
+                rewriteList();
                 System.out.println("Update successful");
                 result = true;
                 break;
             }
         }
-        if (!result){
+        if (!result) {
             System.out.println("Not Founded");
+        }
+    }
+
+    public void rewriteList() throws IOException {
+//        File file = new File(EMPLOYEE_LIST);
+//        file.delete();
+
+        for (Employee element : employeeList) {
+            String line =  element.getId()+ "," +
+                    element.getName() + "," +
+                    element.getDateOfBirth() + "," +
+                    element.getAddress() + "," +
+                    element.getGender() + "," +
+                    element.getIdCard() + "," +
+                    element.getPhoneNumber() + "," +
+                    element.getEmail() + "," +
+                    element.getLevel() + "," +
+                    element.getPosition() + "," +
+                    element.getSalary();
+            ReadAndWrite.writeList(EMPLOYEE_LIST, line);
         }
     }
 
     //Delete by name
     @Override
-    public void delete(){
+    public void delete() throws IOException {
         boolean check = false;
         System.out.println("Enter name of Employee want to delete: ");
         String nameDelete = sc.nextLine();
         for (Employee employee : employeeList) {
-            if (employee.getName().toLowerCase().contains(nameDelete)){
+            if (employee.getName().toLowerCase().contains(nameDelete.toLowerCase())) {
                 employeeList.remove(employee);
+                rewriteList();
                 System.out.println("Delete successful");
                 display();
                 check = true;
                 break;
             }
         }
-        if (!check){
+        if (!check) {
             System.out.println("Not Founded");
         }
     }
@@ -254,7 +283,7 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
                 break;
             }
         }
-        if (!check){
+        if (!check) {
             System.out.println("Not Founded");
         }
     }

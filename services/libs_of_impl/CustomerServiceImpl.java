@@ -22,40 +22,40 @@ public class CustomerServiceImpl extends ServiceAbstract implements CustomerServ
 
     @Override
     public void addNew() {
-        System.out.println("Enter id: ");
-        int inputId = Integer.parseInt(sc.nextLine());
-        System.out.println("Enter name: ");
-        String inputName = sc.nextLine();
-        System.out.println("Enter age: ");
-        int inputAge = Integer.parseInt(sc.nextLine());
-        System.out.println("Enter address: ");
-        String inputAddress = sc.nextLine();
-        System.out.println("Choose gender: 1.Male / 2.Female ");
-        int chooseGender = Integer.parseInt(sc.nextLine());
-        boolean comfirmGender = false;
-        if (chooseGender == 1) {
-            comfirmGender = true;
-        } else {
-            comfirmGender = false;
-        }
-        System.out.println("Enter IdCard: ");
-        int inputIdCard = Integer.parseInt(sc.nextLine());
-        System.out.println("Enter phone number: ");
-        int inputNumPhone = Integer.parseInt(sc.nextLine());
-        System.out.println("Enter email: ");
-        String inputEmail = sc.nextLine();
-        System.out.println("Enter type customer: ");
-        String inputType = sc.nextLine();
-        customerList.add(new Customer(inputId,
-                                    inputName,
-                                    inputAge,
-                                    inputAddress,
-                                    comfirmGender,
-                                    inputIdCard,
-                                    inputNumPhone,
-                                    inputEmail,
-                                    inputType));
-        System.out.println("Add new successful");
+//        System.out.println("Enter id: ");
+//        int inputId = Integer.parseInt(sc.nextLine());
+//        System.out.println("Enter name: ");
+//        String inputName = sc.nextLine();
+//        System.out.println("Enter age: ");
+//        int inputAge = Integer.parseInt(sc.nextLine());
+//        System.out.println("Enter address: ");
+//        String inputAddress = sc.nextLine();
+//        System.out.println("Choose gender: 1.Male / 2.Female ");
+//        int chooseGender = Integer.parseInt(sc.nextLine());
+//        boolean comfirmGender = false;
+//        if (chooseGender == 1) {
+//            comfirmGender = true;
+//        } else {
+//            comfirmGender = false;
+//        }
+//        System.out.println("Enter IdCard: ");
+//        int inputIdCard = Integer.parseInt(sc.nextLine());
+//        System.out.println("Enter phone number: ");
+//        int inputNumPhone = Integer.parseInt(sc.nextLine());
+//        System.out.println("Enter email: ");
+//        String inputEmail = sc.nextLine();
+//        System.out.println("Enter type customer: ");
+//        String inputType = sc.nextLine();
+//        customerList.add(new Customer(inputId,
+//                                    inputName,
+//                                    inputAge,
+//                                    inputAddress,
+//                                    comfirmGender,
+//                                    inputIdCard,
+//                                    inputNumPhone,
+//                                    inputEmail,
+//                                    inputType));
+//        System.out.println("Add new successful");
     }
 
     @Override
@@ -92,7 +92,7 @@ public class CustomerServiceImpl extends ServiceAbstract implements CustomerServ
                         }
                         case 3: {
                             System.out.println("Enter new Age: ");
-                            customer.setAge(Integer.parseInt(sc.nextLine()));
+                            customer.setGender(sc.nextLine());
                             break;
                         }
                         case 4: {
@@ -102,12 +102,8 @@ public class CustomerServiceImpl extends ServiceAbstract implements CustomerServ
                         }
 
                         case 5: {
-                            System.out.println("1. Male / 2.Female");
-                            if (Integer.parseInt(sc.nextLine()) == 1) {
-                                customer.setGender(true);
-                            } else {
-                                customer.setGender(false);
-                            }
+                            System.out.println("Enter new Gender: ");
+                            customer.setGender(sc.nextLine());
                             break;
                         }
                         case 6: {

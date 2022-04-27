@@ -5,7 +5,7 @@ import models.facility.House;
 import models.facility.Room;
 import models.facility.Villa;
 import services.libs_of_interface.FacilityService;
-import utils.RegexData;
+import utils.regex.RegexData;
 
 import java.util.*;
 

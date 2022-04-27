@@ -12,7 +12,7 @@ public class Employee extends Person {
                     String name,
                     String dateOfBirth,
                     String address,
-                    boolean gender,
+                    String gender,
                     int idCard,
                     int phoneNumber,
                     String email,
