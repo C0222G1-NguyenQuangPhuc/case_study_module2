@@ -80,6 +80,6 @@ public abstract class Facility {
                 ", Area Use: " + areaUse +
                 ", Rental Price: " + rentalPrice +
                 ", Rental People Max: " + rentalPeopleMax +
-                ", styleRental: " + styleRental ;
+                ", StyleRental: " + styleRental ;
     }
 }

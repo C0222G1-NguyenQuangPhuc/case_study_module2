@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 import java.util.Scanner;
 
-public class RegexEmployee {
+public class RegexPerson {
     public static final String REGEX_EMAIL = "^[A-Za-z0-9+_.-]+@(.+)$";
     public static Scanner sc = new Scanner(System.in);
 

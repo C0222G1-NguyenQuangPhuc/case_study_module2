@@ -3,7 +3,9 @@ package services.libs_of_impl;
 import models.person.Employee;
 import services.libs_of_interface.EmployeeService;
 import utils.ReadAndWrite;
-import utils.regex.RegexEmployee;
+import utils.regex.RegexPerson;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,27 +48,27 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
     @Override
     public void addNew() throws IOException {
         System.out.println("Nhập id nhân viên:");
-        int id = RegexEmployee.inputIntNumber();
+        int id = RegexPerson.inputIntNumber();
         System.out.println("Nhập tên nhân viên:");
         String name = sc.nextLine();
-        String dateOfBirth = RegexEmployee.getDateOfBirth();
+        String dateOfBirth = RegexPerson.getDateOfBirth();
         System.out.println("Nhập địa chỉ:");
         String address = sc.nextLine();
-        System.out.println("Chọn giới tính: 1.Nam / 2.Nữ");
+        System.out.println("Chọn giới tính:");
         String gender = sc.nextLine();
         System.out.println("Nhập số CMND:");
-        int idCard = RegexEmployee.inputIntNumber();
+        int idCard = RegexPerson.inputIntNumber();
         System.out.println("Nhập số điện thoại:");
-        int phoneNumber = RegexEmployee.inputIntNumber();
-        String email = RegexEmployee.inputEmail();
+        int phoneNumber = RegexPerson.inputIntNumber();
+        String email = RegexPerson.inputEmail();
         System.out.println("Chọn trình độ:");
         String level = chooseLevel();
         System.out.println("Chọn vị trí:");
         String position = choosePosition();
         System.out.println("Nhập lương:");
-        double salary = RegexEmployee.inputDouNumber();
+        double salary = RegexPerson.inputDouNumber();
         employeeList.add(new Employee(id, name, dateOfBirth, address, gender, idCard, phoneNumber, email, level, position, salary));
-        String line =  id+ "," +
+        String line = id + "," +
                 name + "," +
                 dateOfBirth + "," +
                 address + "," +
@@ -83,48 +85,56 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
 
     public String chooseLevel() {
         while (true) {
-            System.out.println("1.Trung cấp");
-            System.out.println("2.Cao đẳng");
-            System.out.println("3.Đại học");
-            System.out.println("4.Sau đại học");
-            switch (Integer.parseInt(sc.nextLine())) {
-                case 1:
-                    return "Trung cấp";
-                case 2:
-                    return "Cao đẳng";
-                case 3:
-                    return "Đại học";
-                case 4:
-                    return "Sau đại học";
-                default:
-                    System.out.println("Thử lại");
+            try {
+                System.out.println("1.Trung cấp");
+                System.out.println("2.Cao đẳng");
+                System.out.println("3.Đại học");
+                System.out.println("4.Sau đại học");
+                switch (Integer.parseInt(sc.nextLine())) {
+                    case 1:
+                        return "Trung cấp";
+                    case 2:
+                        return "Cao đẳng";
+                    case 3:
+                        return "Đại học";
+                    case 4:
+                        return "Sau đại học";
+                    default:
+                        System.out.println("Thử lại");
+                }
+            }catch (NumberFormatException e){
+                System.out.println("Vui lòng nhập số");
             }
         }
     }
 
     public String choosePosition() {
         while (true) {
-            System.out.println("1.Lễ tân");
-            System.out.println("2.Phục vụ");
-            System.out.println("3.Chuyên viên");
-            System.out.println("4.Giám sát");
-            System.out.println("5.Quản lý");
-            System.out.println("6.Giám đốc");
-            switch (Integer.parseInt(sc.nextLine())) {
-                case 1:
-                    return "Lễ tân";
-                case 2:
-                    return "Phục vụ";
-                case 3:
-                    return "Chuyên viên";
-                case 4:
-                    return "Giám sát";
-                case 5:
-                    return "Quản lý";
-                case 6:
-                    return "Giám đốc";
-                default:
-                    System.out.println("Thử lại");
+            try {
+                System.out.println("1.Lễ tân");
+                System.out.println("2.Phục vụ");
+                System.out.println("3.Chuyên viên");
+                System.out.println("4.Giám sát");
+                System.out.println("5.Quản lý");
+                System.out.println("6.Giám đốc");
+                switch (Integer.parseInt(sc.nextLine())) {
+                    case 1:
+                        return "Lễ tân";
+                    case 2:
+                        return "Phục vụ";
+                    case 3:
+                        return "Chuyên viên";
+                    case 4:
+                        return "Giám sát";
+                    case 5:
+                        return "Quản lý";
+                    case 6:
+                        return "Giám đốc";
+                    default:
+                        System.out.println("Thử lại");
+                }
+            }catch (NumberFormatException e){
+                System.out.println("Vui lòng nhập số");
             }
         }
     }
@@ -137,13 +147,13 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
         System.out.println("Enter name employee want to edit");
         String findName = sc.nextLine();
         for (Employee employee : employeeList) {
-            if (employee.getName().contains(findName)) {
+            if (employee.getName().toLowerCase().contains(findName.toLowerCase())) {
                 System.out.println(employee.toString());
                 boolean check = true;
                 while (check) {
                     System.out.println("1.Edit Id of Employee.");
                     System.out.println("2.Edit Name of Employee.");
-                    System.out.println("3.Edit Age.");
+                    System.out.println("3.Edit Date of birth.");
                     System.out.println("4.Edit Address.");
                     System.out.println("5.Edit Gender.");
                     System.out.println("6.Edit IdCard.");
@@ -158,7 +168,7 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
                     switch (choose) {
                         case 1: {
                             System.out.println("Enter new Id: ");
-                            employee.setId(RegexEmployee.inputIntNumber());
+                            employee.setId(RegexPerson.inputIntNumber());
                             break;
                         }
                         case 2: {
@@ -167,8 +177,8 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
                             break;
                         }
                         case 3: {
-                            System.out.println("Enter new Age: ");
-                            employee.setDateOfBirth(sc.nextLine());
+                            System.out.println("Enter new Date of Birth: ");
+                            employee.setDateOfBirth(RegexPerson.getDateOfBirth());
                             break;
                         }
                         case 4: {
@@ -199,11 +209,11 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
                         }
                         case 9:
                             System.out.println("Enter new Level: ");
-                            employee.setLevel(sc.nextLine());
+                            employee.setLevel(chooseLevel());
                             break;
                         case 10: {
                             System.out.println("Enter new Position: ");
-                            employee.setPosition(sc.nextLine());
+                            employee.setPosition(choosePosition());
                             break;
                         }
                         case 11: {
@@ -219,7 +229,7 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
                             break;
                     }
                 }
-                rewriteList();
+                rewriteListEmployee();
                 System.out.println("Update successful");
                 result = true;
                 break;
@@ -230,12 +240,12 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
         }
     }
 
-    public void rewriteList() throws IOException {
-//        File file = new File(EMPLOYEE_LIST);
-//        file.delete();
+    private void rewriteListEmployee() throws IOException {
+        File file = new File(EMPLOYEE_LIST);
+        file.delete();
 
         for (Employee element : employeeList) {
-            String line =  element.getId()+ "," +
+            String line = element.getId() + "," +
                     element.getName() + "," +
                     element.getDateOfBirth() + "," +
                     element.getAddress() + "," +
@@ -250,7 +260,6 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
         }
     }
 
-    //Delete by name
     @Override
     public void delete() throws IOException {
         boolean check = false;
@@ -259,7 +268,7 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
         for (Employee employee : employeeList) {
             if (employee.getName().toLowerCase().contains(nameDelete.toLowerCase())) {
                 employeeList.remove(employee);
-                rewriteList();
+                rewriteListEmployee();
                 System.out.println("Delete successful");
                 display();
                 check = true;
@@ -273,11 +282,12 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
 
     @Override
     public void findByName() {
+        employeeList = getEmployeeList();
         System.out.println("Enter name: ");
         String findName = sc.nextLine();
         boolean check = false;
         for (Employee employee : employeeList) {
-            if (employee.getName().toLowerCase().contains(findName)) {
+            if (employee.getName().toLowerCase().contains(findName.toLowerCase())) {
                 System.out.println(employee.toString());
                 check = true;
                 break;
@@ -287,6 +297,4 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
             System.out.println("Not Founded");
         }
     }
-
-
 }

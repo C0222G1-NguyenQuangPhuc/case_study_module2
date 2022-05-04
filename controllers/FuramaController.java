@@ -12,6 +12,7 @@ public class FuramaController {
     static CustomerServiceImpl customerService = new CustomerServiceImpl();
     static BookingServiceImpl bookingService = new BookingServiceImpl();
     static ContractServiceImpl contractService = new ContractServiceImpl();
+
     public static void main(String[] args) throws IOException {
         displayMainMenu();
     }
@@ -46,8 +47,11 @@ public class FuramaController {
                     case 6:
                         System.exit(0);
                         break;
+                    default:
+                        System.out.println("Retry");
+                        break;
                 }
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("Retry");
             }
         }
@@ -81,7 +85,7 @@ public class FuramaController {
                         employeeService.delete();
                         break;
                     }
-                    case 5:{
+                    case 5: {
                         employeeService.findByName();
                         break;
                     }
@@ -94,7 +98,7 @@ public class FuramaController {
                         break;
                     }
                 }
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("Please enter number");
             }
         }
@@ -141,7 +145,7 @@ public class FuramaController {
                         break;
                     }
                 }
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException | IOException e) {
                 System.out.println("Please enter number");
             }
         }
@@ -162,31 +166,31 @@ public class FuramaController {
                         bookingService.addBooking();
                         break;
                     }
-                    case 2:{
+                    case 2: {
                         bookingService.displayListBooking();
                         break;
                     }
-                    case 3:{
+                    case 3: {
                         contractService.createNewContract();
                         break;
                     }
-                    case 4:{
+                    case 4: {
                         contractService.displayListContract();
                         break;
                     }
-                    case 5:{
+                    case 5: {
 
                     }
-                    case 0:{
+                    case 0: {
                         check = false;
                         break;
                     }
-                    default:{
+                    default: {
                         System.out.println("Retry");
                         break;
                     }
                 }
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("Please enter number");
             }
         }
@@ -209,7 +213,7 @@ public class FuramaController {
                         addNewFacilityMenu();
                         break;
                     }
-                    case 3:{
+                    case 3: {
                         facilityService.addFacilityMaintain();
                         break;
                     }
@@ -220,7 +224,7 @@ public class FuramaController {
                         System.out.println("Retry");
                         break;
                 }
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("Please enter number");
             }
         }
@@ -256,8 +260,10 @@ public class FuramaController {
                         System.out.println("Retry");
                         break;
                 }
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException | IOException e) {
                 System.out.println("Please enter number");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
