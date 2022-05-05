@@ -31,4 +31,10 @@ public class Room extends Facility {
                 super.toString() +
                 ", Free Of Charge (FOC): " + freeOfCharge;
     }
+
+    @Override
+    public String writeToFile(){
+        return super.writeToFile() + "," +
+                freeOfCharge;
+    }
 }

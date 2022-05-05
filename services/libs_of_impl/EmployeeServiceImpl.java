@@ -4,7 +4,6 @@ import models.person.Employee;
 import services.libs_of_interface.EmployeeService;
 import utils.ReadAndWrite;
 import utils.regex.RegexPerson;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,10 +44,29 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
         return listFileEmployee;
     }
 
+    public static int inputIDEmployee(List<Employee> listEmployee){
+        System.out.println("Nhập ID nhân viên:");
+        int id;
+        int count;
+        while (true){
+            count = 0;
+            id = RegexPerson.inputIntNumber();
+            for (Employee employee : listEmployee) {
+                if (id == employee.getId()){
+                    System.out.println("Trùng ID, mời nhập lại:");
+                    count++;
+                    break;
+                }
+            }
+            if (count == 0){
+                return id;
+            }
+        }
+    }
+
     @Override
     public void addNew() throws IOException {
-        System.out.println("Nhập id nhân viên:");
-        int id = RegexPerson.inputIntNumber();
+        int id = inputIDEmployee(employeeList);
         System.out.println("Nhập tên nhân viên:");
         String name = sc.nextLine();
         String dateOfBirth = RegexPerson.getDateOfBirth();
@@ -139,7 +157,6 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
         }
     }
 
-    //Edit by name
     @Override
     public void edit() throws IOException {
 
@@ -168,7 +185,7 @@ public class EmployeeServiceImpl extends ServiceAbstract implements EmployeeServ
                     switch (choose) {
                         case 1: {
                             System.out.println("Enter new Id: ");
-                            employee.setId(RegexPerson.inputIntNumber());
+                            employee.setId(inputIDEmployee(employeeList));
                             break;
                         }
                         case 2: {

@@ -1,29 +1,42 @@
 package utils;
 
+import models.Booking;
 import models.facility.Facility;
 import models.facility.House;
 import models.facility.Room;
 import models.facility.Villa;
-import services.libs_of_impl.FacilityServiceImpl;
-
 import java.io.*;
 import java.util.*;
 
 public class ReadAndWrite {
+    public static final String FACILITY_LIST = "src\\data\\facility.csv";
+    public static final String VILLA_LIST = "src\\data\\villa.csv";
+    public static final String HOUSE_LIST = "src\\data\\house.csv";
+    public static final String ROOM_LIST = "src\\data\\room.csv";
+    public static final String BOOKING_LIST = "src\\data\\booking.csv";
+
+
     public static void writeList(String path, String line) throws IOException {
         File file = new File(path);
-        FileWriter fileWriter = null;
-        BufferedWriter bufferedWriter = null;
-        try {
-            fileWriter = new FileWriter(file, true);
-            bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(line);
-            bufferedWriter.newLine();
+        try (FileWriter fileWriter = new FileWriter(file, true);
+             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+                bufferedWriter.write(line);
+                bufferedWriter.newLine();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            bufferedWriter.close();
-            fileWriter.close();
+        }
+    }
+
+    public static void writeList(String path, List<String> list) throws IOException {
+        File file = new File(path);
+        try (FileWriter fileWriter = new FileWriter(file, true);
+             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+            for (String item : list) {
+                bufferedWriter.write(item);
+                bufferedWriter.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -46,8 +59,6 @@ public class ReadAndWrite {
                 myList.add(arrStr);
             }
             return myList;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,46 +68,65 @@ public class ReadAndWrite {
     public static void writeFacility(Map<Facility, Integer> facilityIntegerMap , String path){
         try {
             FileWriter fileWriter = new FileWriter(new File(path));
-            fileWriter.write("FACILITY,");
-            fileWriter.append("HIRE NUMBER" + "\n");
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            String line = "";
             for(Map.Entry<Facility, Integer> map : facilityIntegerMap.entrySet()){
-                fileWriter.append(map.getKey().getIdFacility() + "," + map.getValue() + "\n");
+                line = map.getKey().writeToFile() + "," + map.getValue();
+                if (checkToWrite(path, line)){
+                    bufferedWriter.write(line);
+                    bufferedWriter.newLine();
+                }
             }
+            bufferedWriter.close();
             fileWriter.close();
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public static Map<Facility, Integer> readFacilityCsv(String path) {
+    public static Map<Facility, Integer> readFacilityCsv() {
         Map<Facility, Integer> facilityIntegerMap = new LinkedHashMap<>();
-        Facility facility = null;
-        List<House> houseList = FacilityServiceImpl.getHouseList();
-        List<Villa> villaList = FacilityServiceImpl.getVillaList();
-        List<Room> roomList = FacilityServiceImpl.getRoomList();
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(path));
+            BufferedReader br = new BufferedReader(new FileReader(FACILITY_LIST));
             String line = "";
-            line = br.readLine();
+            String[] arr;
+            Villa villa;
+            House house;
+            Room room;
             while ((line = br.readLine()) != null) {
-                String[] arr = line.split(",");
-                for (House house : houseList) {
-                    if (arr[0].equals(house.getIdFacility())) {
-                        facility = house;
-                    }
+                arr = line.split(",");
+                if (arr[0].contains("SVVL")){
+                    villa = new Villa(arr[0],
+                            arr[1],
+                            Double.parseDouble(arr[2]),
+                            Integer.parseInt(arr[3]),
+                            Integer.parseInt(arr[4]),
+                            arr[5],
+                            arr[6],
+                            Double.parseDouble(arr[7]),
+                            Integer.parseInt(arr[8]));
+                    facilityIntegerMap.put(villa,Integer.parseInt(arr[9]));
+                } else if (arr[0].contains("SVHO")) {
+                    house = new House(arr[0],
+                            arr[1],
+                            Double.parseDouble(arr[2]),
+                            Integer.parseInt(arr[3]),
+                            Integer.parseInt(arr[4]),
+                            arr[5],
+                            arr[6],
+                            Integer.parseInt(arr[7]));
+                    facilityIntegerMap.put(house,Integer.parseInt(arr[8]));
+                }else if (arr[0].contains("SVRO")){
+                    room = new Room(arr[0],
+                            arr[1],
+                            Double.parseDouble(arr[2]),
+                            Integer.parseInt(arr[3]),
+                            Integer.parseInt(arr[4]),
+                            arr[5],
+                            arr[6]);
+                    facilityIntegerMap.put(room,Integer.parseInt(arr[7]));
                 }
-                for (Villa villa : villaList) {
-                    if (arr[0].equals(villa.getIdFacility())) {
-                        facility = villa;
-                    }
-                }
-                for (Room room : roomList) {
-                    if (arr[0].equals(room.getIdFacility())) {
-                        facility = room;
-                    }
-                }
-                facilityIntegerMap.put(facility, Integer.parseInt(arr[1]));
             }
             br.close();
         } catch (Exception e) {
@@ -105,4 +135,62 @@ public class ReadAndWrite {
         return facilityIntegerMap;
     }
 
+    public static void writeBookingFile(Set<Booking> bookingFile , String path){
+        try {
+            FileWriter fileWriter = new FileWriter(new File(path));
+            BufferedWriter bufferedReader = new BufferedWriter(fileWriter);
+            for (Booking booking : bookingFile) {
+                bufferedReader.write(booking.writeToFile());
+                bufferedReader.newLine();
+            }
+            fileWriter.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean checkToWrite(String path, String line){
+        boolean check = false;
+        if (path.equals(VILLA_LIST) && line.contains("SVVL") ||
+            path.equals(HOUSE_LIST) && line.contains("SVHO") ||
+            path.equals(ROOM_LIST) && line.contains("SVRO") ||
+            path.equals(FACILITY_LIST)){
+            check = true;
+        }
+        return check;
+    }
+
+    public static void writeBooking(TreeSet<Booking> bookTreeSet, String path){
+        try {
+            FileWriter fileWriter = new FileWriter(new File(path));
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            String line = "";
+            for (Booking booking : bookTreeSet) {
+                line = booking.writeToFile();
+                bufferedWriter.write(line);
+                bufferedWriter.newLine();
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static TreeSet<Booking> readBooking(){
+        TreeSet<Booking> bookingSet = new TreeSet<>();
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(BOOKING_LIST));
+            String line = "";
+            String[] arr;
+            Booking booking;
+            while ((line = bufferedReader.readLine()) != null){
+                arr = line.split(",");
+                booking = new Booking(Integer.parseInt(arr[0]),arr[1], arr[2], arr[3], arr[4]);
+                bookingSet.add(booking);
+            }
+            bufferedReader.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return bookingSet;
+    }
 }

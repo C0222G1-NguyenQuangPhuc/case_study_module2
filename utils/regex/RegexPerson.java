@@ -15,6 +15,8 @@ public class RegexPerson {
         return RegexData.regexStr(sc.nextLine(),REGEX_EMAIL,"Bạn đã nhập sai định dạng, email phải có dạng abc@gmail.com !!!");
     }
 
+
+
     public static int inputIntNumber(){
         int num;
         while (true){
@@ -60,7 +62,7 @@ public class RegexPerson {
                 dateTimeCheck(dateOfBirth);
                 break;
             } catch (Exception e) {
-                System.err.println("Ngày sinh phải có dạng dd/MM/yyyy");;
+                System.err.println("Ngày sinh phải có dạng dd/MM/yyyy");
             }
         }
         return dateOfBirth;

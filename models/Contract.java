@@ -1,23 +1,21 @@
 package models;
 
-import models.person.Customer;
-
 public class Contract {
     private String idContract;
-    private Booking booking;
+    private int idBooking;
     private String prePayment;
-    private String Expense;
-    private Customer customer;
+    private String expense;
+    private int idCustomer;
 
     public Contract() {
     }
 
-    public Contract(String idContract, Booking booking, String prePayment, String expense, Customer customer) {
+    public Contract(String idContract, int booking, String prePayment, String expense, int customer) {
         this.idContract = idContract;
-        this.booking = booking;
+        this.idBooking = booking;
         this.prePayment = prePayment;
-        Expense = expense;
-        this.customer = customer;
+        this.expense = expense;
+        this.idCustomer = customer;
     }
 
     public String getIdContract() {
@@ -28,12 +26,12 @@ public class Contract {
         this.idContract = idContract;
     }
 
-    public Booking getBooking() {
-        return booking;
+    public int getIdBooking() {
+        return idBooking;
     }
 
-    public void setBooking(Booking booking) {
-        this.booking = booking;
+    public void setIdBooking(int idBooking) {
+        this.idBooking = idBooking;
     }
 
     public String getPrePayment() {
@@ -45,29 +43,37 @@ public class Contract {
     }
 
     public String getExpense() {
-        return Expense;
+        return expense;
     }
 
     public void setExpense(String expense) {
-        Expense = expense;
+        this.expense = expense;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public int getIdCustomer() {
+        return idCustomer;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setIdCustomer(int idCustomer) {
+        this.idCustomer = idCustomer;
     }
 
     @Override
     public String toString() {
         return "Contract{" +
                 "idContract='" + idContract + '\'' +
-                ", booking=" + booking +
+                ", booking=" + idBooking +
                 ", prePayment='" + prePayment + '\'' +
-                ", Expense='" + Expense + '\'' +
-                ", customer=" + customer +
+                ", Expense='" + expense + '\'' +
+                ", customer=" + idCustomer +
                 '}';
+    }
+
+    public String writeToFile(){
+        return idContract + "," +
+                idBooking + "," +
+                prePayment + "," +
+                expense + "," +
+                idCustomer;
     }
 }

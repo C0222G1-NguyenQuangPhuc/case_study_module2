@@ -12,15 +12,15 @@ import java.util.*;
 
 public class FacilityServiceImpl extends ServiceAbstract implements FacilityService {
 
-    private static final String FACILITY_LIST = "src\\data\\facility.csv";
-    private static final String VILLA_LIST = "src\\data\\villa.csv";
-    private static final String HOUSE_LIST = "src\\data\\house.csv";
-    private static final String ROOM_LIST = "src\\data\\room.csv";
-    private static Map<Facility, Integer> facilityIntegerMap = new LinkedHashMap<>();
-    private static List<Villa> villaList = getVillaList();
-    private static List<House> houseList = getHouseList();
-    private static List<Room> roomList = getRoomList();
-    private static Scanner sc = new Scanner(System.in);
+    public static final String FACILITY_LIST = "src\\data\\facility.csv";
+    public static final String VILLA_LIST = "src\\data\\villa.csv";
+    public static final String HOUSE_LIST = "src\\data\\house.csv";
+    public static final String ROOM_LIST = "src\\data\\room.csv";
+    public static Map<Facility, Integer> facilityIntegerMap = ReadAndWrite.readFacilityCsv();
+    public static List<Villa> villaList = getVillaList();
+    public static List<House> houseList = getHouseList();
+    public static List<Room> roomList = getRoomList();
+    public static Scanner sc = new Scanner(System.in);
 
     @Override
     public void display() {
@@ -34,13 +34,12 @@ public class FacilityServiceImpl extends ServiceAbstract implements FacilityServ
             try {
                 switch (Integer.parseInt(sc.nextLine())) {
                     case 1: {
-                        facilityIntegerMap = ReadAndWrite.readFacilityCsv(FACILITY_LIST);
                         try {
                             if (facilityIntegerMap.size() == 0) {
                                 throw new NullPointerException();
                             } else {
                                 for (Map.Entry<Facility, Integer> map : facilityIntegerMap.entrySet()) {
-                                    System.out.println("Service Name = " + map.getKey().getIdFacility() + " , Hire Numbers = " + map.getValue());
+                                    System.out.println("Service Name = " + map.getKey() + " , Hire Numbers = " + map.getValue());
                                 }
                             }
                         } catch (NullPointerException e) {

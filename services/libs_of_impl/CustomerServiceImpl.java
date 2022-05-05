@@ -6,6 +6,7 @@ import utils.ReadAndWrite;
 import utils.regex.RegexPerson;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -43,10 +44,29 @@ public class CustomerServiceImpl extends ServiceAbstract implements CustomerServ
         return listFileCustomer;
     }
 
+    public static int inputIDCustomer(List<Customer> customerList){
+        System.out.println("Nhập ID khách hàng:");
+        int id;
+        int count;
+        while (true){
+            count = 0;
+            id = RegexPerson.inputIntNumber();
+            for (Customer customer : customerList) {
+                if (id == customer.getId()){
+                    System.out.println("Trùng ID, mời nhập lại:");
+                    count++;
+                    break;
+                }
+            }
+            if (count == 0){
+                return id;
+            }
+        }
+    }
+
     @Override
     public void addNew() throws IOException {
-        System.out.println("Nhập Id khách hàng:");
-        int id = RegexPerson.inputIntNumber();
+        int id = inputIDCustomer(customerList);
         System.out.println("Nhập tên khách hàng:");
         String name = sc.nextLine();
         String dateOfBirth = RegexPerson.getDateOfBirth();
@@ -128,7 +148,7 @@ public class CustomerServiceImpl extends ServiceAbstract implements CustomerServ
                     switch (choose) {
                         case 1: {
                             System.out.println("Enter new Id: ");
-                            customer.setId(RegexPerson.inputIntNumber());
+                            customer.setId(inputIDCustomer(customerList));
                             break;
                         }
                         case 2: {
@@ -193,7 +213,7 @@ public class CustomerServiceImpl extends ServiceAbstract implements CustomerServ
     private void rewriteListCustomer() throws IOException {
         File file = new File(CUSTOMER_LIST);
         file.delete();
-
+        List<String> myList = new ArrayList<>();
         for (Customer element : customerList) {
             String line =  element.getId()+ "," +
                     element.getName() + "," +
@@ -204,8 +224,10 @@ public class CustomerServiceImpl extends ServiceAbstract implements CustomerServ
                     element.getPhoneNumber() + "," +
                     element.getEmail() + "," +
                     element.getTypeCustomer();
-            ReadAndWrite.writeList(CUSTOMER_LIST, line);
+            myList.add(line);
+
         }
+        ReadAndWrite.writeList(CUSTOMER_LIST, myList);
     }
 
     @Override

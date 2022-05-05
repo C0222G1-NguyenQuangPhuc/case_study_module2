@@ -1,19 +1,16 @@
 package models;
 
-import models.facility.Facility;
-import models.person.Customer;
-
 public class Booking {
     private Integer idBooking;
     private String startDate;
     private String endDate;
-    private Customer customer;
-    private Facility facility;
+    private String customer;
+    private String facility;
 
     public Booking() {
     }
 
-    public Booking(Integer idBooking, String startDate, String endDate, Customer customer, Facility facility) {
+    public Booking(Integer idBooking, String startDate, String endDate, String customer, String facility) {
         this.idBooking = idBooking;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -45,19 +42,19 @@ public class Booking {
         this.endDate = endDate;
     }
 
-    public Customer getCustomer() {
+    public String getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(String customer) {
         this.customer = customer;
     }
 
-    public Facility getFacility() {
+    public String getFacility() {
         return facility;
     }
 
-    public void setFacility(Facility facility) {
+    public void setFacility(String facility) {
         this.facility = facility;
     }
 
@@ -70,5 +67,13 @@ public class Booking {
                 ", customer=" + customer +
                 ", facility=" + facility +
                 '}';
+    }
+
+    public String writeToFile(){
+        return idBooking + "," +
+                startDate + "," +
+                endDate + "," +
+                customer + "," +
+                facility + ",";
     }
 }

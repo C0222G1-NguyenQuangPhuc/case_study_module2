@@ -42,4 +42,11 @@ public class House extends Facility {
                 ", Standard House: " + standardHouse +
                 ", Floor: " + floor;
     }
+
+    @Override
+    public String writeToFile(){
+        return super.writeToFile() + "," +
+                standardHouse + "," +
+                floor;
+    }
 }
