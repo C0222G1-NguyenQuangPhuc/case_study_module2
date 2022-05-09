@@ -4,7 +4,6 @@ import models.Booking;
 import models.facility.Facility;
 import models.person.Customer;
 import services.libs_of_interface.BookingService;
-import utils.BookingComparator;
 import utils.ReadAndWrite;
 import utils.regex.RegexDateTime;
 

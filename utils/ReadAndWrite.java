@@ -27,7 +27,7 @@ public class ReadAndWrite {
         }
     }
 
-    public static void writeList(String path, List<String> list) throws IOException {
+    public static void writeList(String path, List<String> list){
         File file = new File(path);
         try (FileWriter fileWriter = new FileWriter(file, true);
              BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
